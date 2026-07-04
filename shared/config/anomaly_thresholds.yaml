@@ -1,0 +1,22 @@
+temperature_c:
+  min: 18
+  max: 30
+humidity_pct:
+  min: 55
+  max: 80
+soil_moisture_pct:
+  min: 30
+  max: 75
+co2_ppm:
+  min: 400
+  max: 1200
+light_lux:
+  min_day: 12000
+  max_day: 60000
+  max_night: 500
+battery_level:
+  min: 20
+missing_data:
+  stale_after_minutes: 10
+zone_instability:
+  simultaneous_drift_count: 3

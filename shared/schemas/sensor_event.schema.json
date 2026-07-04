@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sensor-analysis.local/shared/schemas/sensor_event.schema.json",
+  "title": "Greenhouse Sensor Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_ts",
+    "sensor_id",
+    "greenhouse_id",
+    "zone_id",
+    "metric_family",
+    "temperature_c",
+    "humidity_pct",
+    "soil_moisture_pct",
+    "co2_ppm",
+    "light_lux",
+    "battery_level",
+    "fan_status",
+    "irrigation_status",
+    "location_status",
+    "is_injected_anomaly",
+    "anomaly_type"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sensor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "greenhouse_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "zone_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metric_family": {
+      "type": "string",
+      "enum": [
+        "climate",
+        "soil",
+        "air",
+        "light",
+        "device_health"
+      ]
+    },
+    "temperature_c": {
+      "type": "number"
+    },
+    "humidity_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "soil_moisture_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "co2_ppm": {
+      "type": "number",
+      "minimum": 0
+    },
+    "light_lux": {
+      "type": "number",
+      "minimum": 0
+    },
+    "battery_level": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "fan_status": {
+      "type": "string",
+      "enum": [
+        "on",
+        "off"
+      ]
+    },
+    "irrigation_status": {
+      "type": "string",
+      "enum": [
+        "on",
+        "off"
+      ]
+    },
+    "location_status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "offline",
+        "maintenance"
+      ]
+    },
+    "is_injected_anomaly": {
+      "type": "boolean"
+    },
+    "anomaly_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "temperature_high",
+        "temperature_low",
+        "humidity_out_of_range",
+        "soil_moisture_low",
+        "co2_out_of_range",
+        "light_out_of_range",
+        "battery_low",
+        "missing_data",
+        "zone_instability",
+        null
+      ]
+    }
+  }
+}

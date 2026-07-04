@@ -1,10 +1,10 @@
 # Greenhouse Sensor Analytics Platform with Databricks, Spark, Kafka, and AWS
 
 ## Summary
-Build a cloud-based greenhouse analytics platform that simulates and processes 1M+ sensor datapoints using distributed streaming ingest, Spark-based analytics, and an AI copilot for grounded analysis. The project should showcase modern data engineering skill through `Databricks`, `Apache Spark`, `Kafka`, `AWS`, and a bronze/silver/gold lakehouse design.
+Build a cloud-based greenhouse analytics platform that simulates and processes 1M+ sensor datapoints using distributed streaming ingest, Spark-based analytics, and an AI copilot for grounded analysis. The project should showcase modern data engineering skill through `Databricks`, `Apache Spark`, `Kafka`, `AWS`, and a bronze/silver/gold lakehouse design, while keeping the sensor fleet small enough to demo cheaply.
 
 Primary portfolio story:
-- Built an end-to-end streaming and analytics platform for 1M+ greenhouse sensor events on AWS
+- Built an end-to-end streaming and analytics platform for 100 continuously streaming greenhouse sensors and 1M+ greenhouse sensor events on AWS
 - Used `Kafka` for ingestion, `Databricks Spark` for distributed ETL and anomaly detection, and `S3 + Delta Lake` for the analytical data lake
 - Added a web dashboard and AI copilot for natural-language analysis over processed greenhouse metrics
 
@@ -73,10 +73,12 @@ Use these components and roles:
 
 ## Greenhouse Data Model
 Sensor event schema:
+- `event_id`
+- `event_ts`
 - `sensor_id`
 - `greenhouse_id`
 - `zone_id`
-- `timestamp`
+- `metric_family`
 - `temperature_c`
 - `humidity_pct`
 - `soil_moisture_pct`
@@ -86,12 +88,25 @@ Sensor event schema:
 - `fan_status`
 - `irrigation_status`
 - `location_status`
+- `is_injected_anomaly`
+- `anomaly_type`
+
+Event contract rules:
+- `event_id` is unique per emitted reading
+- `event_ts` is the canonical UTC event timestamp
+- `metric_family` identifies the sensor family that emitted the reading
+- one event contains the full sensor reading snapshot
+- anomaly scenarios must be marked explicitly with `is_injected_anomaly` and `anomaly_type`
 
 Recommended scale:
-- 1,000 to 10,000 simulated sensors
-- Multiple greenhouse zones with distinct climate patterns
-- 1M+ total events
+- 100 simulated sensors
+- 4 greenhouses
+- 5 zones per greenhouse
+- 5 sensors per zone
+- 1M+ total events during sustained or burst runs
 - Events generated continuously over a defined test window
+- Normal demo cadence: 1 event every 15 seconds per sensor
+- Load-test cadence: 1 event every 1 second per sensor
 - Controlled anomaly scenarios injected into selected sensors or zones
 
 ## Processing Design
@@ -222,7 +237,8 @@ Phase 4. Hardening and demo
 
 ## Test Plan
 Functional checks:
-- 1M+ events generated and successfully ingested
+- 100 sensors generate continuous streaming telemetry and successfully ingest into Kafka
+- 1M+ events generated and successfully ingested during a sustained or burst run
 - Kafka topics handle concurrent producers
 - Bronze, silver, and gold tables populate correctly
 - Spark jobs produce expected outputs on known sample windows
@@ -255,4 +271,5 @@ Produce these artifacts:
 - `Kafka` remains part of the final design because the project is near-real-time
 - `Databricks + AWS` is the primary platform
 - v1 uses synthetic greenhouse telemetry
+- v1 uses a 100-sensor baseline topology with configurable event rates instead of a massive device fleet
 - v1 focuses on explainable analytics and grounded AI, not automated greenhouse control

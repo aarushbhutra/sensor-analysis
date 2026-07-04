@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Purpose
-This repository is for a greenhouse sensor analytics platform built on `Databricks`, `Spark`, `Kafka`, and `AWS`. The source of truth for product scope and architecture is [`PLAN.MD`](C:\Users\aarus\OneDrive\Documents\sensor analysis\PLAN.MD).
+This repository is for a greenhouse sensor analytics platform built on `Databricks`, `Spark`, `Kafka`, and `AWS`. The source of truth for product scope and architecture is [`PLAN.MD`](./PLAN.MD).
 
 ## Project Rules
 - Keep the project centered on greenhouse telemetry, not generic IoT.
@@ -47,7 +47,7 @@ When implementing, prioritize in this order:
 - Do not shift the project toward Hadoop-first language unless the user explicitly asks for that change.
 
 ## Working Agreement for Future Agents
-- Read [`PLAN.MD`](C:\Users\aarus\OneDrive\Documents\sensor analysis\PLAN.MD) before making major architecture changes.
+- Read [`PLAN.MD`](./PLAN.MD) before making major architecture changes.
 - If implementation diverges from the plan, update the plan in the same change set.
 - Keep edits scoped and consistent with the current architecture.
 - If a tradeoff is unclear, prefer the option that strengthens the Databricks/Spark/Kafka/AWS portfolio story.
