@@ -1,7 +1,7 @@
 # Greenhouse Sensor Analytics Infrastructure
 
 ## Purpose
-This file fully defines the v1 infrastructure for the greenhouse sensor analytics platform described in [PLAN.MD](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLAN.MD). It keeps the project centered on `Databricks`, `Spark`, `Kafka`, and `AWS`, with `S3 + Delta Lake` as the system of record and a read-only AI layer.
+This file fully defines the v1 infrastructure for the greenhouse sensor analytics platform described in [PLAN.MD](./PLAN.MD). It keeps the project centered on `Databricks`, `Spark`, `Kafka`, and `AWS`, with `S3 + Delta Lake` as the system of record and a read-only AI layer.
 
 ## v1 Decisions
 - Cloud: `AWS`
@@ -141,6 +141,11 @@ flowchart LR
   - generate greenhouse, zone, and sensor telemetry
   - inject deterministic anomalies
   - publish JSON events to Kafka
+ - baseline topology:
+   - `4` greenhouses
+   - `5` zones per greenhouse
+   - `5` sensors per zone
+   - `100` sensors total
 
 ### 2. Amazon MSK
 - Cluster name: `sensor-msk`
@@ -163,6 +168,7 @@ Reason for the topic shape:
 - enough parallelism for Spark ingestion
 - ordering stays stable per sensor stream
 - simple to reason about in demos
+- keeps the infra story credible with `100` active sensor streams instead of faking scale with a tiny device count
 
 ### 3. Databricks Workspace
 - One workspace: `sensor-dbx`
@@ -453,11 +459,17 @@ flowchart LR
 ```
 
 ## Throughput Target
-- Simulators: `1,000` to `10,000` virtual sensors
+- Simulators: `100` virtual sensors
 - Total events: `1M+`
 - Expected event shape: small JSON payload per reading
-- Start with one event every `15` to `60` seconds per sensor depending on demo scale
+- Normal mode: one event every `15` seconds per sensor
+- Load-test mode: one event every `1` second per sensor
 - Adjust partitions and Databricks cluster size only if measured lag demands it
+
+Expected volume:
+- Normal mode: about `576,000` events per day
+- Load-test mode: about `8,640,000` events per day
+- `1M+` events can be reached in roughly `28` hours in normal mode or roughly `2.8` hours in load-test mode
 
 This is the lazy scaling rule:
 - start with `12` Kafka partitions and small Databricks compute

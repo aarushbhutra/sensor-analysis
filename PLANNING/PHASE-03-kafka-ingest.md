@@ -33,6 +33,7 @@ Connect the existing simulator to Kafka and prove that raw sensor events flow in
 - Allow local Kafka or managed Kafka configuration through config/env settings.
 - Provide a simple validation path to prove messages can be consumed successfully.
 - Keep publishing logic small and attached to the existing simulator, not a separate replacement app.
+- Preserve continuous streaming behavior for both the normal `15`-second cadence and the `1`-second load-test cadence from Phase 2.
 
 ## What This Phase Must Not Do
 - Do not start Spark ingestion yet.

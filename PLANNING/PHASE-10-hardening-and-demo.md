@@ -29,7 +29,8 @@ If any of those are missing, this phase should fix the missing prerequisite befo
 
 ## Functional Requirements
 - Run sustained simulator load.
-- Validate the 1M+ event target path.
+- Validate the normal continuous-streaming path with the full `100`-sensor topology.
+- Validate the 1M+ event target path using the faster load-test cadence rather than by inflating sensor count.
 - Validate bronze, silver, and gold freshness.
 - Validate dashboard behavior under real system output.
 - Validate AI answers against seeded anomalies and current pipeline status.

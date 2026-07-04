@@ -4,8 +4,8 @@
 This file is the top-level execution index for the greenhouse sensor analytics platform. It does not contain the full phase details. Each phase has its own file and that phase file is the execution contract for that part of the build.
 
 Use this with:
-- [PLAN.MD](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLAN.MD)
-- [INFRASTRUCTURE.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\INFRASTRUCTURE.md)
+- [PLAN.MD](../PLAN.MD)
+- [INFRASTRUCTURE.md](../INFRASTRUCTURE.md)
 
 ## Global Rules
 - Work one phase at a time.
@@ -34,16 +34,16 @@ No later phase should create replacement top-level folders like `service/`, `api
 ## Status Tracker
 | Phase | File | Main Output | Status |
 |---|---|---|---|
-| 1 | [PHASE-01-project-skeleton.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-01-project-skeleton.md) | Canonical repo structure and shared contracts | Complete |
-| 2 | [PHASE-02-sensor-simulator.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-02-sensor-simulator.md) | Deterministic greenhouse event generator | Not started |
-| 3 | [PHASE-03-kafka-ingest.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-03-kafka-ingest.md) | Kafka producer wiring and raw topic flow | Not started |
-| 4 | [PHASE-04-bronze-pipeline.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-04-bronze-pipeline.md) | Bronze Spark ingest job and raw Delta table | Not started |
-| 5 | [PHASE-05-silver-pipeline.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-05-silver-pipeline.md) | Typed, deduped, normalized silver layer | Not started |
-| 6 | [PHASE-06-gold-analytics.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-06-gold-analytics.md) | Gold aggregates, anomalies, and risk tables | Not started |
-| 7 | [PHASE-07-backend-api.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-07-backend-api.md) | Read-only API over gold outputs | Not started |
-| 8 | [PHASE-08-dashboard.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-08-dashboard.md) | Dashboard using the existing backend API | Not started |
-| 9 | [PHASE-09-ai-copilot.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-09-ai-copilot.md) | Grounded read-only copilot using the existing API/query layer | Not started |
-| 10 | [PHASE-10-hardening-and-demo.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\PHASE-10-hardening-and-demo.md) | End-to-end validation and demo package | Not started |
+| 1 | [PHASE-01-project-skeleton.md](./PHASE-01-project-skeleton.md) | Canonical repo structure and shared contracts | Complete |
+| 2 | [PHASE-02-sensor-simulator.md](./PHASE-02-sensor-simulator.md) | Deterministic greenhouse event generator | Not started |
+| 3 | [PHASE-03-kafka-ingest.md](./PHASE-03-kafka-ingest.md) | Kafka producer wiring and raw topic flow | Not started |
+| 4 | [PHASE-04-bronze-pipeline.md](./PHASE-04-bronze-pipeline.md) | Bronze Spark ingest job and raw Delta table | Not started |
+| 5 | [PHASE-05-silver-pipeline.md](./PHASE-05-silver-pipeline.md) | Typed, deduped, normalized silver layer | Not started |
+| 6 | [PHASE-06-gold-analytics.md](./PHASE-06-gold-analytics.md) | Gold aggregates, anomalies, and risk tables | Not started |
+| 7 | [PHASE-07-backend-api.md](./PHASE-07-backend-api.md) | Read-only API over gold outputs | Not started |
+| 8 | [PHASE-08-dashboard.md](./PHASE-08-dashboard.md) | Dashboard using the existing backend API | Not started |
+| 9 | [PHASE-09-ai-copilot.md](./PHASE-09-ai-copilot.md) | Grounded read-only copilot using the existing API/query layer | Not started |
+| 10 | [PHASE-10-hardening-and-demo.md](./PHASE-10-hardening-and-demo.md) | End-to-end validation and demo package | Not started |
 
 ## Allowed AI Execution Scope
 - One AI run should usually do one phase.

@@ -27,6 +27,7 @@ If the repo already has equivalent files under `simulator/src/`, extend them in 
 - Do not create `simulator/schema.json`, `simulator/config.yaml`, or any other duplicate contract file if the shared file already exists.
 
 ## Functional Requirements
+- Reuse the `100`-sensor topology from `shared/config/greenhouses.yaml`.
 - Generate telemetry for:
   - temperature
   - humidity
@@ -40,6 +41,10 @@ If the repo already has equivalent files under `simulator/src/`, extend them in 
   - sensor
 - Emit one full reading snapshot per event.
 - Support deterministic generation from a fixed seed or fixed configuration.
+- Support continuous streaming instead of hourly-only generation.
+- Support at least two rates:
+  - normal demo mode at one event every `15` seconds per sensor
+  - load-test mode at one event every `1` second per sensor
 - Support deterministic anomaly injection for at least:
   - temperature band breach
   - humidity drift

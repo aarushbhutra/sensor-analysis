@@ -7,9 +7,9 @@ Create the canonical repo structure, shared contracts, and baseline documentatio
 Without a fixed structure, later phases will create duplicate schemas, duplicate config files, and duplicate entrypoints. This phase removes that ambiguity before implementation starts.
 
 ## Must Read Before Work
-- [PLAN.MD](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLAN.MD)
-- [INFRASTRUCTURE.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\INFRASTRUCTURE.md)
-- [ROADMAP.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\ROADMAP.md)
+- [PLAN.MD](../PLAN.MD)
+- [INFRASTRUCTURE.md](../INFRASTRUCTURE.md)
+- [ROADMAP.md](./ROADMAP.md)
 
 ## Exact Repo Structure To Create
 Create these directories if they do not already exist:
@@ -50,7 +50,7 @@ Create these initial files if they do not already exist:
 - `.env.example` must name the future environment variables even if values are placeholders.
 - `sensor_event.schema.json` must define the fields already named in `PLAN.MD` and `INFRASTRUCTURE.md`.
 - `anomaly_thresholds.yaml` must define v1 thresholds for temperature, humidity, soil moisture, CO2, light, battery, and missing-data timing.
-- `greenhouses.yaml` must define a starter topology with greenhouse, zone, and sensor relationships.
+- `greenhouses.yaml` must define the baseline greenhouse topology with greenhouse, zone, and sensor relationships.
 
 ## What This Phase Must Not Do
 - Do not implement the simulator logic yet.

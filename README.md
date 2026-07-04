@@ -1,6 +1,8 @@
 # Greenhouse Sensor Analytics Platform
 
-This repository builds a greenhouse telemetry platform on `Databricks`, `Spark`, `Kafka`, and `AWS`. The architecture source of truth is [PLAN.MD](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLAN.MD), and the execution order lives in [PLANNING/ROADMAP.md](C:\Users\aarus\OneDrive\Documents\sensor%20analysis\PLANNING\ROADMAP.md).
+This repository builds a greenhouse telemetry platform on `Databricks`, `Spark`, `Kafka`, and `AWS`. The architecture source of truth is [PLAN.MD](./PLAN.MD), and the execution order lives in [PLANNING/ROADMAP.md](./PLANNING/ROADMAP.md).
+
+Current baseline: `100` continuously streaming sensors across `4` greenhouses, with a realistic normal cadence and a faster load-test mode for `1M+` event runs.
 
 ## Phase Order
 1. Phase 1: project skeleton and shared contracts

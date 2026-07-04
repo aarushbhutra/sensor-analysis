@@ -6,20 +6,67 @@ greenhouses:
       - zone_id: gh-001-a
         name: propagation
         sensors:
-          - sensor_id: gh-001-a-temp-01
+          - sensor_id: gh-001-a-climate-01
             metric_family: climate
           - sensor_id: gh-001-a-soil-01
             metric_family: soil
           - sensor_id: gh-001-a-air-01
             metric_family: air
+          - sensor_id: gh-001-a-light-01
+            metric_family: light
+          - sensor_id: gh-001-a-health-01
+            metric_family: device_health
       - zone_id: gh-001-b
-        name: fruiting
+        name: vegetative
         sensors:
-          - sensor_id: gh-001-b-temp-01
+          - sensor_id: gh-001-b-climate-01
             metric_family: climate
+          - sensor_id: gh-001-b-soil-01
+            metric_family: soil
+          - sensor_id: gh-001-b-air-01
+            metric_family: air
           - sensor_id: gh-001-b-light-01
             metric_family: light
           - sensor_id: gh-001-b-health-01
+            metric_family: device_health
+      - zone_id: gh-001-c
+        name: fruiting-east
+        sensors:
+          - sensor_id: gh-001-c-climate-01
+            metric_family: climate
+          - sensor_id: gh-001-c-soil-01
+            metric_family: soil
+          - sensor_id: gh-001-c-air-01
+            metric_family: air
+          - sensor_id: gh-001-c-light-01
+            metric_family: light
+          - sensor_id: gh-001-c-health-01
+            metric_family: device_health
+      - zone_id: gh-001-d
+        name: fruiting-west
+        sensors:
+          - sensor_id: gh-001-d-climate-01
+            metric_family: climate
+          - sensor_id: gh-001-d-soil-01
+            metric_family: soil
+          - sensor_id: gh-001-d-air-01
+            metric_family: air
+          - sensor_id: gh-001-d-light-01
+            metric_family: light
+          - sensor_id: gh-001-d-health-01
+            metric_family: device_health
+      - zone_id: gh-001-e
+        name: packing-buffer
+        sensors:
+          - sensor_id: gh-001-e-climate-01
+            metric_family: climate
+          - sensor_id: gh-001-e-soil-01
+            metric_family: soil
+          - sensor_id: gh-001-e-air-01
+            metric_family: air
+          - sensor_id: gh-001-e-light-01
+            metric_family: light
+          - sensor_id: gh-001-e-health-01
             metric_family: device_health
   - greenhouse_id: gh-002
     name: south-grow
@@ -28,18 +75,203 @@ greenhouses:
       - zone_id: gh-002-a
         name: seedling
         sensors:
-          - sensor_id: gh-002-a-temp-01
+          - sensor_id: gh-002-a-climate-01
             metric_family: climate
           - sensor_id: gh-002-a-soil-01
             metric_family: soil
+          - sensor_id: gh-002-a-air-01
+            metric_family: air
+          - sensor_id: gh-002-a-light-01
+            metric_family: light
           - sensor_id: gh-002-a-health-01
             metric_family: device_health
       - zone_id: gh-002-b
-        name: mature-canopy
+        name: vine-training
         sensors:
-          - sensor_id: gh-002-b-temp-01
+          - sensor_id: gh-002-b-climate-01
             metric_family: climate
+          - sensor_id: gh-002-b-soil-01
+            metric_family: soil
           - sensor_id: gh-002-b-air-01
             metric_family: air
           - sensor_id: gh-002-b-light-01
             metric_family: light
+          - sensor_id: gh-002-b-health-01
+            metric_family: device_health
+      - zone_id: gh-002-c
+        name: mature-canopy
+        sensors:
+          - sensor_id: gh-002-c-climate-01
+            metric_family: climate
+          - sensor_id: gh-002-c-soil-01
+            metric_family: soil
+          - sensor_id: gh-002-c-air-01
+            metric_family: air
+          - sensor_id: gh-002-c-light-01
+            metric_family: light
+          - sensor_id: gh-002-c-health-01
+            metric_family: device_health
+      - zone_id: gh-002-d
+        name: harvest-lane
+        sensors:
+          - sensor_id: gh-002-d-climate-01
+            metric_family: climate
+          - sensor_id: gh-002-d-soil-01
+            metric_family: soil
+          - sensor_id: gh-002-d-air-01
+            metric_family: air
+          - sensor_id: gh-002-d-light-01
+            metric_family: light
+          - sensor_id: gh-002-d-health-01
+            metric_family: device_health
+      - zone_id: gh-002-e
+        name: reset-bay
+        sensors:
+          - sensor_id: gh-002-e-climate-01
+            metric_family: climate
+          - sensor_id: gh-002-e-soil-01
+            metric_family: soil
+          - sensor_id: gh-002-e-air-01
+            metric_family: air
+          - sensor_id: gh-002-e-light-01
+            metric_family: light
+          - sensor_id: gh-002-e-health-01
+            metric_family: device_health
+  - greenhouse_id: gh-003
+    name: east-grow
+    crop: peppers
+    zones:
+      - zone_id: gh-003-a
+        name: nursery
+        sensors:
+          - sensor_id: gh-003-a-climate-01
+            metric_family: climate
+          - sensor_id: gh-003-a-soil-01
+            metric_family: soil
+          - sensor_id: gh-003-a-air-01
+            metric_family: air
+          - sensor_id: gh-003-a-light-01
+            metric_family: light
+          - sensor_id: gh-003-a-health-01
+            metric_family: device_health
+      - zone_id: gh-003-b
+        name: bloom
+        sensors:
+          - sensor_id: gh-003-b-climate-01
+            metric_family: climate
+          - sensor_id: gh-003-b-soil-01
+            metric_family: soil
+          - sensor_id: gh-003-b-air-01
+            metric_family: air
+          - sensor_id: gh-003-b-light-01
+            metric_family: light
+          - sensor_id: gh-003-b-health-01
+            metric_family: device_health
+      - zone_id: gh-003-c
+        name: pollination
+        sensors:
+          - sensor_id: gh-003-c-climate-01
+            metric_family: climate
+          - sensor_id: gh-003-c-soil-01
+            metric_family: soil
+          - sensor_id: gh-003-c-air-01
+            metric_family: air
+          - sensor_id: gh-003-c-light-01
+            metric_family: light
+          - sensor_id: gh-003-c-health-01
+            metric_family: device_health
+      - zone_id: gh-003-d
+        name: ripening
+        sensors:
+          - sensor_id: gh-003-d-climate-01
+            metric_family: climate
+          - sensor_id: gh-003-d-soil-01
+            metric_family: soil
+          - sensor_id: gh-003-d-air-01
+            metric_family: air
+          - sensor_id: gh-003-d-light-01
+            metric_family: light
+          - sensor_id: gh-003-d-health-01
+            metric_family: device_health
+      - zone_id: gh-003-e
+        name: qc-buffer
+        sensors:
+          - sensor_id: gh-003-e-climate-01
+            metric_family: climate
+          - sensor_id: gh-003-e-soil-01
+            metric_family: soil
+          - sensor_id: gh-003-e-air-01
+            metric_family: air
+          - sensor_id: gh-003-e-light-01
+            metric_family: light
+          - sensor_id: gh-003-e-health-01
+            metric_family: device_health
+  - greenhouse_id: gh-004
+    name: west-grow
+    crop: lettuce
+    zones:
+      - zone_id: gh-004-a
+        name: germination
+        sensors:
+          - sensor_id: gh-004-a-climate-01
+            metric_family: climate
+          - sensor_id: gh-004-a-soil-01
+            metric_family: soil
+          - sensor_id: gh-004-a-air-01
+            metric_family: air
+          - sensor_id: gh-004-a-light-01
+            metric_family: light
+          - sensor_id: gh-004-a-health-01
+            metric_family: device_health
+      - zone_id: gh-004-b
+        name: leafy-growth
+        sensors:
+          - sensor_id: gh-004-b-climate-01
+            metric_family: climate
+          - sensor_id: gh-004-b-soil-01
+            metric_family: soil
+          - sensor_id: gh-004-b-air-01
+            metric_family: air
+          - sensor_id: gh-004-b-light-01
+            metric_family: light
+          - sensor_id: gh-004-b-health-01
+            metric_family: device_health
+      - zone_id: gh-004-c
+        name: nutrient-tuning
+        sensors:
+          - sensor_id: gh-004-c-climate-01
+            metric_family: climate
+          - sensor_id: gh-004-c-soil-01
+            metric_family: soil
+          - sensor_id: gh-004-c-air-01
+            metric_family: air
+          - sensor_id: gh-004-c-light-01
+            metric_family: light
+          - sensor_id: gh-004-c-health-01
+            metric_family: device_health
+      - zone_id: gh-004-d
+        name: finishing
+        sensors:
+          - sensor_id: gh-004-d-climate-01
+            metric_family: climate
+          - sensor_id: gh-004-d-soil-01
+            metric_family: soil
+          - sensor_id: gh-004-d-air-01
+            metric_family: air
+          - sensor_id: gh-004-d-light-01
+            metric_family: light
+          - sensor_id: gh-004-d-health-01
+            metric_family: device_health
+      - zone_id: gh-004-e
+        name: cold-hold
+        sensors:
+          - sensor_id: gh-004-e-climate-01
+            metric_family: climate
+          - sensor_id: gh-004-e-soil-01
+            metric_family: soil
+          - sensor_id: gh-004-e-air-01
+            metric_family: air
+          - sensor_id: gh-004-e-light-01
+            metric_family: light
+          - sensor_id: gh-004-e-health-01
+            metric_family: device_health
