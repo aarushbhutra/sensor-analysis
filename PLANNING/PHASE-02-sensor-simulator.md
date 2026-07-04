@@ -83,3 +83,10 @@ Phase 3 must reuse:
 - the shared schema from Phase 1
 
 Phase 3 must not create a second standalone producer that bypasses the simulator code unless the user explicitly asks for a replacement.
+
+## Completion Notes
+- Status: Complete
+- Entrypoint: `python simulator/src/main.py`
+- Sample output: `simulator/output/sample_events.jsonl`
+- Verification run: `python simulator/src/main.py --events 300 --seed 42 --mode normal --check`
+- Additional checks confirmed deterministic repeat output, 100 unique sensors, four greenhouses, all required anomaly markers, and load mode one-second cadence.

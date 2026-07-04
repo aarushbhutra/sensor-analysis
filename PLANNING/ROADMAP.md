@@ -35,7 +35,7 @@ No later phase should create replacement top-level folders like `service/`, `api
 | Phase | File | Main Output | Status |
 |---|---|---|---|
 | 1 | [PHASE-01-project-skeleton.md](./PHASE-01-project-skeleton.md) | Canonical repo structure and shared contracts | Complete |
-| 2 | [PHASE-02-sensor-simulator.md](./PHASE-02-sensor-simulator.md) | Deterministic greenhouse event generator | Not started |
+| 2 | [PHASE-02-sensor-simulator.md](./PHASE-02-sensor-simulator.md) | Deterministic greenhouse event generator | Complete |
 | 3 | [PHASE-03-kafka-ingest.md](./PHASE-03-kafka-ingest.md) | Kafka producer wiring and raw topic flow | Not started |
 | 4 | [PHASE-04-bronze-pipeline.md](./PHASE-04-bronze-pipeline.md) | Bronze Spark ingest job and raw Delta table | Not started |
 | 5 | [PHASE-05-silver-pipeline.md](./PHASE-05-silver-pipeline.md) | Typed, deduped, normalized silver layer | Not started |
