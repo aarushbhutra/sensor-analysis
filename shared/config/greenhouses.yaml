@@ -1,0 +1,45 @@
+greenhouses:
+  - greenhouse_id: gh-001
+    name: north-grow
+    crop: tomatoes
+    zones:
+      - zone_id: gh-001-a
+        name: propagation
+        sensors:
+          - sensor_id: gh-001-a-temp-01
+            metric_family: climate
+          - sensor_id: gh-001-a-soil-01
+            metric_family: soil
+          - sensor_id: gh-001-a-air-01
+            metric_family: air
+      - zone_id: gh-001-b
+        name: fruiting
+        sensors:
+          - sensor_id: gh-001-b-temp-01
+            metric_family: climate
+          - sensor_id: gh-001-b-light-01
+            metric_family: light
+          - sensor_id: gh-001-b-health-01
+            metric_family: device_health
+  - greenhouse_id: gh-002
+    name: south-grow
+    crop: cucumbers
+    zones:
+      - zone_id: gh-002-a
+        name: seedling
+        sensors:
+          - sensor_id: gh-002-a-temp-01
+            metric_family: climate
+          - sensor_id: gh-002-a-soil-01
+            metric_family: soil
+          - sensor_id: gh-002-a-health-01
+            metric_family: device_health
+      - zone_id: gh-002-b
+        name: mature-canopy
+        sensors:
+          - sensor_id: gh-002-b-temp-01
+            metric_family: climate
+          - sensor_id: gh-002-b-air-01
+            metric_family: air
+          - sensor_id: gh-002-b-light-01
+            metric_family: light
