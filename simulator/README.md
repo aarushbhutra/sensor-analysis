@@ -20,3 +20,31 @@ The simulator always reads:
 It writes `simulator/output/sample_events.jsonl` by default. Events are full sensor snapshots with explicit `is_injected_anomaly` and `anomaly_type` markers for deterministic demo cases.
 
 Telemetry is stateful: sensor values drift over time, anomaly windows persist across staggered sensor-specific readings, battery drains monotonically before crossing the low threshold, and temperature, humidity, soil moisture, CO2, and light recover gradually instead of snapping back on the next event.
+
+## Kafka Publishing
+
+The same entrypoint can publish generated events to Kafka:
+
+```powershell
+python simulator/src/main.py --events 100 --seed 42 --mode load --publish-kafka
+```
+
+Kafka settings are read from `.env` first, then `shared/config/kafka.yaml`. For MSK IAM from Python, keep `KAFKA_SECURITY_PROTOCOL=SASL_SSL` and `KAFKA_SASL_MECHANISM=AWS_MSK_IAM`; the simulator maps that to the Python-supported `OAUTHBEARER` flow.
+
+Install the Kafka client packages on the machine that can reach MSK:
+
+```bash
+pip install "confluent-kafka<2.13" aws-msk-iam-sasl-signer-python
+```
+
+Dry-run validation does not connect to Kafka:
+
+```powershell
+python simulator/src/main.py --events 100 --seed 42 --mode load --publish-kafka --kafka-dry-run
+```
+
+Consume and schema-check a Kafka sample:
+
+```powershell
+python simulator/src/main.py --events 10 --consume-kafka
+```

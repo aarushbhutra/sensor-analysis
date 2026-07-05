@@ -1,0 +1,7 @@
+# Env vars override these defaults.
+bootstrap_servers:
+topic: sensor.telemetry.raw
+security_protocol: PLAINTEXT
+sasl_mechanism:
+aws_region: ap-south-1
+client_id: sensor-simulator

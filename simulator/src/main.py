@@ -7,6 +7,7 @@ import time
 
 from anomalies import REQUIRED_ANOMALIES
 from generator import MODES, generate_events, load_config, validate_event, write_events
+from kafka_producer import consume_events, load_kafka_settings, publish_events
 from models import REPO_ROOT
 
 
@@ -21,6 +22,12 @@ def main() -> int:
     start_time = datetime.fromisoformat(args.start_time) if args.start_time else DEFAULT_START
     interval_seconds = MODES[args.mode]
 
+    if args.consume_kafka:
+        settings = load_kafka_settings()
+        count = consume_events(settings, config.schema, limit=args.events, timeout_seconds=args.kafka_timeout)
+        print(f"consumed {count} schema-valid events from {settings.topic}")
+        return 0
+
     events = _validated_events(
         config,
         event_count=args.events,
@@ -29,12 +36,20 @@ def main() -> int:
         start_time=start_time,
         realtime=args.realtime,
     )
-    count = write_events(args.output, events)
+    if args.publish_kafka:
+        settings = load_kafka_settings()
+        result = publish_events(events, settings, config.schema, dry_run=args.kafka_dry_run)
+        mode = "validated" if args.kafka_dry_run else "published"
+        print(f"{mode} {result.count} events for {result.topic} first_key={result.first_key} last_key={result.last_key}")
+        count = None
+    else:
+        count = write_events(args.output, events)
 
     if args.check:
         run_self_check(config, seed=args.seed, interval_seconds=interval_seconds, start_time=start_time)
 
-    print(f"wrote {count} events to {args.output}")
+    if count is not None:
+        print(f"wrote {count} events to {args.output}")
     return 0
 
 
@@ -47,6 +62,10 @@ def parse_args():
     parser.add_argument("--start-time", default=None, help="ISO timestamp, default is 2026-01-01T00:00:00+00:00")
     parser.add_argument("--realtime", action="store_true", help="sleep between full sensor ticks")
     parser.add_argument("--check", action="store_true", help="run reproducibility, topology, schema, and anomaly checks")
+    parser.add_argument("--publish-kafka", action="store_true", help="publish generated events to Kafka instead of writing JSONL")
+    parser.add_argument("--kafka-dry-run", action="store_true", help="validate Kafka payloads and partition keys without connecting")
+    parser.add_argument("--consume-kafka", action="store_true", help="consume and schema-check events from the configured Kafka topic")
+    parser.add_argument("--kafka-timeout", type=float, default=30.0, help="seconds to wait while consuming Kafka validation events")
     return parser.parse_args()
 
 
