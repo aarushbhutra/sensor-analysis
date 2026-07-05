@@ -5,7 +5,7 @@ Generates deterministic newline-delimited JSON telemetry for the 100-sensor gree
 Run from the repo root:
 
 ```powershell
-python simulator/src/main.py --events 300 --seed 42 --mode normal --check
+python simulator/src/main.py --events 1200 --seed 42 --mode normal --check
 ```
 
 Modes:
@@ -18,3 +18,5 @@ The simulator always reads:
 - `shared/config/anomaly_thresholds.yaml`
 
 It writes `simulator/output/sample_events.jsonl` by default. Events are full sensor snapshots with explicit `is_injected_anomaly` and `anomaly_type` markers for deterministic demo cases.
+
+Telemetry is stateful: sensor values drift over time, anomaly windows persist across readings, battery drains monotonically, and temperature, humidity, soil moisture, CO2, and light recover gradually instead of snapping back on the next event.
