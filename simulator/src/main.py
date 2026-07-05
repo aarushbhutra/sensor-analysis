@@ -12,6 +12,7 @@ from models import REPO_ROOT
 
 DEFAULT_OUTPUT = REPO_ROOT / "simulator" / "output" / "sample_events.jsonl"
 DEFAULT_START = datetime(2026, 1, 1, tzinfo=timezone.utc)
+CHECK_EVENTS = 2400
 
 
 def main() -> int:
@@ -39,7 +40,7 @@ def main() -> int:
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate deterministic greenhouse sensor telemetry.")
-    parser.add_argument("--events", type=int, default=1200, help="number of events to write")
+    parser.add_argument("--events", type=int, default=CHECK_EVENTS, help="number of events to write")
     parser.add_argument("--seed", type=int, default=20260705, help="deterministic random seed")
     parser.add_argument("--mode", choices=MODES, default="normal", help="normal=15s per sensor, load=1s per sensor")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="newline-delimited JSON output path")
@@ -50,8 +51,8 @@ def parse_args():
 
 
 def run_self_check(config, *, seed: int, interval_seconds: int, start_time: datetime) -> None:
-    first = list(generate_events(config, event_count=1200, seed=seed, interval_seconds=interval_seconds, start_time=start_time))
-    second = list(generate_events(config, event_count=1200, seed=seed, interval_seconds=interval_seconds, start_time=start_time))
+    first = list(generate_events(config, event_count=CHECK_EVENTS, seed=seed, interval_seconds=interval_seconds, start_time=start_time))
+    second = list(generate_events(config, event_count=CHECK_EVENTS, seed=seed, interval_seconds=interval_seconds, start_time=start_time))
     assert first == second, "same seed/config did not reproduce identical output"
     assert _jsonl_bytes(first) == _jsonl_bytes(second), "same seed/config did not reproduce byte-identical JSONL"
     assert len(config.sensors) == 100, f"expected 100 sensors, found {len(config.sensors)}"
@@ -63,6 +64,7 @@ def run_self_check(config, *, seed: int, interval_seconds: int, start_time: date
     missing = REQUIRED_ANOMALIES - observed
     assert not missing, f"missing injected anomaly types: {sorted(missing)}"
     _assert_anomaly_breaches(first, config.thresholds)
+    _assert_staggered_anomalies(first)
     _assert_battery_monotonic(first)
     _assert_persistent_anomalies(first)
     _assert_gradual_recovery(first, "temperature_high", "temperature_c", 4.0)
@@ -138,6 +140,22 @@ def _assert_persistent_anomalies(events: list[dict]) -> None:
             if streak >= 2:
                 return
     raise AssertionError("no anomaly persisted across multiple readings for the same sensor")
+
+
+def _assert_staggered_anomalies(events: list[dict]) -> None:
+    starts_by_type = defaultdict(dict)
+    for sensor_id, rows in _by_sensor(events).items():
+        for tick, event in enumerate(rows):
+            anomaly_type = event["anomaly_type"]
+            if anomaly_type in {"battery_low", "missing_data", None}:
+                continue
+            starts_by_type[anomaly_type].setdefault(sensor_id, tick)
+
+    for anomaly_type, starts in starts_by_type.items():
+        if len(starts) < 2:
+            raise AssertionError(f"{anomaly_type} only affected one sensor")
+        if len(set(starts.values())) < 2:
+            raise AssertionError(f"{anomaly_type} starts on the same tick for every affected sensor")
 
 
 def _assert_gradual_recovery(events: list[dict], anomaly_type: str, metric: str, max_jump: float) -> None:

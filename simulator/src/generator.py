@@ -96,7 +96,7 @@ def _initial_state(sensor: Sensor, rng: random.Random) -> dict:
         "soil_moisture_pct": (38.0 + rng.uniform(-1.0, 1.0)) if sensor.zone_id == "gh-002-c" else 56.0 + zone_bias + rng.uniform(-1.5, 1.5),
         "co2_ppm": 760.0 + rng.uniform(-30.0, 30.0),
         "light_lux": rng.uniform(0.0, 300.0),
-        "battery_level": (23.5 + rng.uniform(0.0, 0.8)) if sensor.sensor_id == "gh-004-e-health-01" else 98.0 + rng.uniform(0.0, 2.0),
+        "battery_level": (35.0 + rng.uniform(0.0, 1.0)) if sensor.sensor_id == "gh-004-e-health-01" else 98.0 + rng.uniform(0.0, 2.0),
         "cloud_cover": rng.uniform(0.05, 0.35),
         "location_status": "online",
     }

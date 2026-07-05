@@ -88,5 +88,5 @@ Phase 3 must not create a second standalone producer that bypasses the simulator
 - Status: Complete
 - Entrypoint: `python simulator/src/main.py`
 - Sample output: `simulator/output/sample_events.jsonl`
-- Verification run: `python simulator/src/main.py --events 1200 --seed 42 --mode normal --check`
-- Additional checks confirmed deterministic repeat output, byte-identical JSONL, 100 unique sensors, four greenhouses, all required anomaly markers, persistent anomaly windows, monotonic battery drain, gradual recovery, normal variability, and load mode one-second cadence.
+- Verification run: `python simulator/src/main.py --events 2400 --seed 42 --mode normal --check`
+- Additional checks confirmed deterministic repeat output, byte-identical JSONL, 100 unique sensors, four greenhouses, all required anomaly markers, staggered persistent anomaly windows, monotonic battery drain before low-battery marking, gradual recovery, normal variability, and load mode one-second cadence.
