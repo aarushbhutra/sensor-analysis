@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(globals().get("__file__", ".")).resolve().parents[2]
 KAFKA_CONFIG_PATH = REPO_ROOT / "shared" / "config" / "kafka.yaml"
 DEFAULT_BUCKET = "sensor-data-lake-dev-859037107576"
 
