@@ -58,3 +58,13 @@ Create the Spark Structured Streaming job that reads the existing Kafka topic an
 Phase 5 must read from `bronze.sensor_events` and must treat that table as the only raw source for downstream cleanup.
 
 Phase 5 must not read directly from Kafka if `bronze.sensor_events` already exists and is working.
+
+## Completion Notes
+- Status: Ready for live Databricks/MSK verification
+- Entrypoint: `pipeline/bronze/stream_ingest.py`
+- Databricks job: `stream_ingest_job`
+- Bronze table: `bronze.sensor_events`
+- Delta path: `s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_events/`
+- Checkpoint path: `s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/`
+- Local structural verification: `$env:BRONZE_INGEST_SELF_CHECK='1'; python pipeline/bronze/stream_ingest.py`
+- Live Databricks verification pending: run the job while the simulator publishes to `sensor.telemetry.raw`, query `bronze.sensor_events`, then restart the job and confirm checkpoint resume behavior.
