@@ -36,6 +36,12 @@ org.apache.spark:spark-sql-kafka-0-10_2.12:<match-your-spark-version>
 software.amazon.msk:aws-msk-iam-auth:2.3.7
 ```
 
+Shared/serverless compute requires the shaded MSK IAM callback class, so the script uses:
+
+```text
+shadedmskiam.software.amazon.msk.auth.iam.IAMClientCallbackHandler
+```
+
 Outputs:
 
 - Table: `bronze.sensor_events`

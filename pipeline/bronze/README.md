@@ -51,6 +51,12 @@ org.apache.spark:spark-sql-kafka-0-10_2.12:<match-your-spark-version>
 software.amazon.msk:aws-msk-iam-auth:2.3.7
 ```
 
+Databricks Shared/serverless compute requires the shaded MSK IAM callback class. The ingest script sets:
+
+```text
+kafka.sasl.client.callback.handler.class=shadedmskiam.software.amazon.msk.auth.iam.IAMClientCallbackHandler
+```
+
 ## Validation
 
 Run the task while the simulator is publishing to Kafka, then query:

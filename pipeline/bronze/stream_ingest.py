@@ -111,7 +111,7 @@ def _auth_options(settings: BronzeIngestSettings) -> dict[str, str]:
             {
                 "kafka.sasl.jaas.config": "software.amazon.msk.auth.iam.IAMLoginModule required;",
                 "kafka.sasl.client.callback.handler.class": (
-                    "software.amazon.msk.auth.iam.IAMClientCallbackHandler"
+                    "shadedmskiam.software.amazon.msk.auth.iam.IAMClientCallbackHandler"
                 ),
             }
         )
