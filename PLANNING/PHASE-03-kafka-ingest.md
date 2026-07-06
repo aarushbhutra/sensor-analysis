@@ -23,7 +23,7 @@ Connect the existing simulator to Kafka and prove that raw sensor events flow in
 - Do not fork the simulator into a second app just to add Kafka publishing.
 
 ## Kafka Contract
-- Topic name: `sensor.telemetry.raw`
+- Topic name: `greenhouse.sensor-events.v1`
 - Partition key: `greenhouse_id:zone_id:sensor_id`
 - Message format: JSON matching the shared schema
 - The payload must preserve anomaly markers produced in Phase 2
@@ -47,14 +47,14 @@ Connect the existing simulator to Kafka and prove that raw sensor events flow in
 - validation notes in `shared/data/kafka_validation.md`
 
 ## Verification
-- Publish simulator events into `sensor.telemetry.raw`.
+- Publish simulator events into `greenhouse.sensor-events.v1`.
 - Consume a sample of those events back out.
 - Confirm the consumed payload still matches `shared/schemas/sensor_event.schema.json`.
 - Confirm the partition key is stable for the same greenhouse, zone, and sensor.
 
 ## Handoff To Phase 4
 Phase 4 must read from:
-- topic `sensor.telemetry.raw`
+- topic `greenhouse.sensor-events.v1`
 - the payload format already published here
 - the schema already defined in Phase 1
 
@@ -67,6 +67,6 @@ Phase 4 must not redefine the Kafka payload shape.
 - Existing simulator verification remains: `python simulator/src/main.py --events 2400 --seed 42 --mode normal --check`
 - Live validation command on the EC2/MSK client host: `python simulator/src/main.py --events 100 --seed 42 --mode load --publish-kafka`
 - Consume validation command on the EC2/MSK client host: `python3.11 simulator/src/main.py --events 10 --consume-kafka`
-- Note: the current MSK cluster topic may be `greenhouse.sensor-events.v1`; the canonical phase topic remains `sensor.telemetry.raw` for Phase 4 unless the plan is intentionally changed.
+- The canonical project topic is now `greenhouse.sensor-events.v1`, matching the MSK topic created and validated in Phase 3.
 - Live publish evidence: `python3.11 simulator/src/main.py --events 10 --seed 42 --mode load --publish-kafka` published to `greenhouse.sensor-events.v1`, and `kafka-get-offsets.sh` showed offsets across partitions `0`, `1`, and `2`.
 - Live consume evidence: `python3.11 simulator/src/main.py --events 10 --consume-kafka` consumed 10 schema-valid events from `greenhouse.sensor-events.v1`.

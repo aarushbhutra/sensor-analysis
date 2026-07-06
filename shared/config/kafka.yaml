@@ -1,6 +1,6 @@
 # Env vars override these defaults.
 bootstrap_servers:
-topic: sensor.telemetry.raw
+topic: greenhouse.sensor-events.v1
 security_protocol: PLAINTEXT
 sasl_mechanism:
 aws_region: ap-south-1

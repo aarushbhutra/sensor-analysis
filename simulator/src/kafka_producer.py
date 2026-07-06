@@ -11,7 +11,7 @@ from models import REPO_ROOT
 
 
 KAFKA_CONFIG_PATH = REPO_ROOT / "shared" / "config" / "kafka.yaml"
-DEFAULT_TOPIC = "sensor.telemetry.raw"
+DEFAULT_TOPIC = "greenhouse.sensor-events.v1"
 DEFAULT_SECURITY_PROTOCOL = "PLAINTEXT"
 
 

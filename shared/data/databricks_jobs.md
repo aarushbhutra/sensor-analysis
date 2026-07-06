@@ -17,7 +17,7 @@ Task parameters:
   "--kafka-bootstrap-servers",
   "<your-msk-bootstrap-brokers>",
   "--kafka-topic",
-  "sensor.telemetry.raw",
+  "greenhouse.sensor-events.v1",
   "--kafka-security-protocol",
   "SASL_SSL",
   "--kafka-sasl-mechanism",

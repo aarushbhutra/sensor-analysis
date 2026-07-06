@@ -34,7 +34,7 @@ def load_settings(argv: list[str] | None = None) -> BronzeIngestSettings:
     return BronzeIngestSettings(
         bootstrap_servers=args.kafka_bootstrap_servers
         or _setting("KAFKA_BOOTSTRAP_SERVERS", config, "bootstrap_servers"),
-        topic=args.kafka_topic or _setting("KAFKA_TOPIC", config, "topic", "sensor.telemetry.raw"),
+        topic=args.kafka_topic or _setting("KAFKA_TOPIC", config, "topic", "greenhouse.sensor-events.v1"),
         security_protocol=args.kafka_security_protocol
         or _setting("KAFKA_SECURITY_PROTOCOL", config, "security_protocol", "PLAINTEXT"),
         sasl_mechanism=args.kafka_sasl_mechanism or _setting("KAFKA_SASL_MECHANISM", config, "sasl_mechanism", ""),
@@ -159,7 +159,7 @@ def _load_simple_yaml(path: Path) -> dict[str, str]:
 def _demo() -> None:
     settings = BronzeIngestSettings(
         bootstrap_servers="broker:9098",
-        topic="sensor.telemetry.raw",
+        topic="greenhouse.sensor-events.v1",
         security_protocol="SASL_SSL",
         sasl_mechanism="AWS_MSK_IAM",
         output_path="s3://bucket/delta/bronze/sensor_events/",

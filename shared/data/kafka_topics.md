@@ -1,6 +1,6 @@
 # Kafka Topics
 
-## sensor.telemetry.raw
+## greenhouse.sensor-events.v1
 
 - Purpose: raw greenhouse sensor telemetry from the simulator
 - Producer: `python simulator/src/main.py --publish-kafka`
@@ -8,4 +8,4 @@
 - Message format: JSON matching `shared/schemas/sensor_event.schema.json`
 - Anomaly markers: `is_injected_anomaly` and `anomaly_type` are preserved unchanged
 
-For the current MSK Serverless cluster, `KAFKA_TOPIC` may be set to `greenhouse.sensor-events.v1` until the canonical `sensor.telemetry.raw` topic is created.
+This is the canonical project topic because it is the MSK topic created and validated during Phase 3.

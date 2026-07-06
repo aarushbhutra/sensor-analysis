@@ -7,7 +7,7 @@ Phase 4 lands raw greenhouse telemetry from Kafka into the bronze Delta table.
 - Script: `pipeline/bronze/stream_ingest.py`
 - Databricks job: `stream_ingest_job`
 - Task: `bronze_stream_ingest`
-- Source topic: `sensor.telemetry.raw`
+- Source topic: `greenhouse.sensor-events.v1`
 - Target table: `bronze.sensor_events`
 - Target path: `s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_events/`
 - Checkpoint path: `s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/`
@@ -21,7 +21,7 @@ Paste this in the Databricks task **Parameters** field. Replace the bootstrap se
   "--kafka-bootstrap-servers",
   "<your-msk-bootstrap-brokers>",
   "--kafka-topic",
-  "sensor.telemetry.raw",
+  "greenhouse.sensor-events.v1",
   "--kafka-security-protocol",
   "SASL_SSL",
   "--kafka-sasl-mechanism",

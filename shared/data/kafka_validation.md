@@ -35,7 +35,7 @@ Required MSK env values:
 ```env
 AWS_REGION=ap-south-1
 KAFKA_BOOTSTRAP_SERVERS=boot-xxxx.c3.kafka-serverless.ap-south-1.amazonaws.com:9098
-KAFKA_TOPIC=sensor.telemetry.raw
+KAFKA_TOPIC=greenhouse.sensor-events.v1
 KAFKA_SECURITY_PROTOCOL=SASL_SSL
 KAFKA_SASL_MECHANISM=AWS_MSK_IAM
 ```
