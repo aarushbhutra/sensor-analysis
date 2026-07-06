@@ -10,15 +10,23 @@ Script: `pipeline/bronze/stream_ingest.py`
 
 Purpose: read raw greenhouse telemetry from Kafka and append it to `bronze.sensor_events`.
 
-Required task environment:
+Task parameters:
 
-```text
-KAFKA_BOOTSTRAP_SERVERS=<your-msk-bootstrap-brokers>
-KAFKA_TOPIC=sensor.telemetry.raw
-KAFKA_SECURITY_PROTOCOL=SASL_SSL
-KAFKA_SASL_MECHANISM=AWS_MSK_IAM
-SENSOR_DATALAKE_BUCKET=sensor-data-lake-dev-859037107576
-BRONZE_TABLE=bronze.sensor_events
+```json
+[
+  "--kafka-bootstrap-servers",
+  "<your-msk-bootstrap-brokers>",
+  "--kafka-topic",
+  "sensor.telemetry.raw",
+  "--kafka-security-protocol",
+  "SASL_SSL",
+  "--kafka-sasl-mechanism",
+  "AWS_MSK_IAM",
+  "--sensor-datalake-bucket",
+  "sensor-data-lake-dev-859037107576",
+  "--bronze-table",
+  "bronze.sensor_events"
+]
 ```
 
 Libraries:

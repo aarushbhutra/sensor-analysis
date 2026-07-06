@@ -12,17 +12,25 @@ Phase 4 lands raw greenhouse telemetry from Kafka into the bronze Delta table.
 - Target path: `s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_events/`
 - Checkpoint path: `s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/`
 
-## Required Environment
+## Required Parameters
 
-Set these on the Databricks task:
+Paste this in the Databricks task **Parameters** field. Replace the bootstrap server value:
 
-```text
-KAFKA_BOOTSTRAP_SERVERS=<your-msk-bootstrap-brokers>
-KAFKA_TOPIC=sensor.telemetry.raw
-KAFKA_SECURITY_PROTOCOL=SASL_SSL
-KAFKA_SASL_MECHANISM=AWS_MSK_IAM
-SENSOR_DATALAKE_BUCKET=sensor-data-lake-dev-859037107576
-BRONZE_TABLE=bronze.sensor_events
+```json
+[
+  "--kafka-bootstrap-servers",
+  "<your-msk-bootstrap-brokers>",
+  "--kafka-topic",
+  "sensor.telemetry.raw",
+  "--kafka-security-protocol",
+  "SASL_SSL",
+  "--kafka-sasl-mechanism",
+  "AWS_MSK_IAM",
+  "--sensor-datalake-bucket",
+  "sensor-data-lake-dev-859037107576",
+  "--bronze-table",
+  "bronze.sensor_events"
+]
 ```
 
 Optional overrides:

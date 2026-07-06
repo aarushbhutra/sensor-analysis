@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import os
+import sys
+from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,20 +24,27 @@ class BronzeIngestSettings:
     checkpoint_path: str
     table_name: str
     starting_offsets: str
+    trigger_interval: str
 
 
-def load_settings() -> BronzeIngestSettings:
+def load_settings(argv: list[str] | None = None) -> BronzeIngestSettings:
+    args = _parse_args(argv)
     config = _load_simple_yaml(KAFKA_CONFIG_PATH)
-    bucket = os.getenv("SENSOR_DATALAKE_BUCKET", DEFAULT_BUCKET)
+    bucket = args.sensor_datalake_bucket or os.getenv("SENSOR_DATALAKE_BUCKET", DEFAULT_BUCKET)
     return BronzeIngestSettings(
-        bootstrap_servers=_setting("KAFKA_BOOTSTRAP_SERVERS", config, "bootstrap_servers"),
-        topic=_setting("KAFKA_TOPIC", config, "topic", "sensor.telemetry.raw"),
-        security_protocol=_setting("KAFKA_SECURITY_PROTOCOL", config, "security_protocol", "PLAINTEXT"),
-        sasl_mechanism=_setting("KAFKA_SASL_MECHANISM", config, "sasl_mechanism", ""),
-        output_path=os.getenv("BRONZE_OUTPUT_PATH", f"s3://{bucket}/delta/bronze/sensor_events/"),
-        checkpoint_path=os.getenv("BRONZE_CHECKPOINT_PATH", f"s3://{bucket}/checkpoints/bronze_ingest/"),
-        table_name=os.getenv("BRONZE_TABLE", "bronze.sensor_events"),
-        starting_offsets=os.getenv("KAFKA_STARTING_OFFSETS", "latest"),
+        bootstrap_servers=args.kafka_bootstrap_servers
+        or _setting("KAFKA_BOOTSTRAP_SERVERS", config, "bootstrap_servers"),
+        topic=args.kafka_topic or _setting("KAFKA_TOPIC", config, "topic", "sensor.telemetry.raw"),
+        security_protocol=args.kafka_security_protocol
+        or _setting("KAFKA_SECURITY_PROTOCOL", config, "security_protocol", "PLAINTEXT"),
+        sasl_mechanism=args.kafka_sasl_mechanism or _setting("KAFKA_SASL_MECHANISM", config, "sasl_mechanism", ""),
+        output_path=args.bronze_output_path
+        or os.getenv("BRONZE_OUTPUT_PATH", f"s3://{bucket}/delta/bronze/sensor_events/"),
+        checkpoint_path=args.bronze_checkpoint_path
+        or os.getenv("BRONZE_CHECKPOINT_PATH", f"s3://{bucket}/checkpoints/bronze_ingest/"),
+        table_name=args.bronze_table or os.getenv("BRONZE_TABLE", "bronze.sensor_events"),
+        starting_offsets=args.kafka_starting_offsets or os.getenv("KAFKA_STARTING_OFFSETS", "latest"),
+        trigger_interval=args.bronze_trigger_interval or os.getenv("BRONZE_TRIGGER_INTERVAL", "30 seconds"),
     )
 
 
@@ -65,10 +74,10 @@ def build_bronze_frame(spark, settings: BronzeIngestSettings):
     )
 
 
-def run() -> None:
+def run(argv: list[str] | None = None) -> None:
     from pyspark.sql import SparkSession
 
-    settings = load_settings()
+    settings = load_settings(argv)
     if not settings.bootstrap_servers:
         raise ValueError("Set KAFKA_BOOTSTRAP_SERVERS before running bronze ingest.")
 
@@ -81,7 +90,7 @@ def run() -> None:
         .outputMode("append")
         .option("checkpointLocation", settings.checkpoint_path)
         .option("path", settings.output_path)
-        .trigger(processingTime=os.getenv("BRONZE_TRIGGER_INTERVAL", "30 seconds"))
+        .trigger(processingTime=settings.trigger_interval)
         .toTable(settings.table_name)
     )
     query.awaitTermination()
@@ -114,6 +123,21 @@ def _database_name(table_name: str) -> str:
     return ".".join(parts[:-1]) if len(parts) > 1 else "bronze"
 
 
+def _parse_args(argv: list[str] | None) -> Namespace:
+    parser = ArgumentParser(description="Stream greenhouse sensor events from Kafka into bronze Delta.")
+    parser.add_argument("--kafka-bootstrap-servers")
+    parser.add_argument("--kafka-topic")
+    parser.add_argument("--kafka-security-protocol")
+    parser.add_argument("--kafka-sasl-mechanism")
+    parser.add_argument("--sensor-datalake-bucket")
+    parser.add_argument("--bronze-output-path")
+    parser.add_argument("--bronze-checkpoint-path")
+    parser.add_argument("--bronze-table")
+    parser.add_argument("--kafka-starting-offsets")
+    parser.add_argument("--bronze-trigger-interval")
+    return parser.parse_args(argv)
+
+
 def _setting(env_name: str, config: dict[str, str], key: str, default: str = "") -> str:
     return os.getenv(env_name, config.get(key, default)).strip()
 
@@ -142,16 +166,20 @@ def _demo() -> None:
         checkpoint_path="s3://bucket/checkpoints/bronze_ingest/",
         table_name="bronze.sensor_events",
         starting_offsets="latest",
+        trigger_interval="30 seconds",
     )
     options = _auth_options(settings)
     assert options["kafka.security.protocol"] == "SASL_SSL"
     assert options["kafka.sasl.mechanism"] == "AWS_MSK_IAM"
     assert _database_name("bronze.sensor_events") == "bronze"
     assert _database_name("sensor_dev.bronze.sensor_events") == "sensor_dev.bronze"
+    args = load_settings(["--kafka-bootstrap-servers", "broker:9098", "--bronze-table", "bronze.sensor_events"])
+    assert args.bootstrap_servers == "broker:9098"
+    assert args.table_name == "bronze.sensor_events"
 
 
 if __name__ == "__main__":
     if os.getenv("BRONZE_INGEST_SELF_CHECK") == "1":
         _demo()
     else:
-        run()
+        run(sys.argv[1:])
