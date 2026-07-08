@@ -17,7 +17,7 @@ Task parameters:
 ```json
 [
   "--kafka-bootstrap-servers",
-  "<your-msk-bootstrap-brokers>",
+  "boot-ikhrabgh.c3.kafka-serverless.ap-south-1.amazonaws.com:9098",
   "--kafka-topic",
   "greenhouse.sensor-events.v1",
   "--kafka-security-protocol",

@@ -19,7 +19,7 @@ Paste this in the Databricks task **Parameters** field. Replace the bootstrap se
 ```json
 [
   "--kafka-bootstrap-servers",
-  "<your-msk-bootstrap-brokers>",
+  "boot-ikhrabgh.c3.kafka-serverless.ap-south-1.amazonaws.com:9098",
   "--kafka-topic",
   "greenhouse.sensor-events.v1",
   "--kafka-security-protocol",
@@ -40,6 +40,8 @@ BRONZE_OUTPUT_PATH=s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_ev
 BRONZE_CHECKPOINT_PATH=s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/
 KAFKA_STARTING_OFFSETS=latest
 ```
+
+The bootstrap server is also checked into `shared/config/kafka.yaml`, so the job can run even if Databricks drops the parameter.
 
 ## Databricks Libraries
 

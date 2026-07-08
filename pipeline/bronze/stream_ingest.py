@@ -12,6 +12,7 @@ from pathlib import Path
 REPO_ROOT = Path(globals().get("__file__", ".")).resolve().parents[2]
 KAFKA_CONFIG_PATH = REPO_ROOT / "shared" / "config" / "kafka.yaml"
 DEFAULT_BUCKET = "sensor-data-lake-dev-859037107576"
+DEFAULT_BOOTSTRAP_SERVERS = "boot-ikhrabgh.c3.kafka-serverless.ap-south-1.amazonaws.com:9098"
 
 
 @dataclass(frozen=True)
@@ -32,7 +33,7 @@ def load_settings(argv: list[str] | None = None) -> BronzeIngestSettings:
     bucket = args.sensor_datalake_bucket or os.getenv("SENSOR_DATALAKE_BUCKET", DEFAULT_BUCKET)
     return BronzeIngestSettings(
         bootstrap_servers=args.kafka_bootstrap_servers
-        or _setting("KAFKA_BOOTSTRAP_SERVERS", config, "bootstrap_servers"),
+        or _setting("KAFKA_BOOTSTRAP_SERVERS", config, "bootstrap_servers", DEFAULT_BOOTSTRAP_SERVERS),
         topic=args.kafka_topic or _setting("KAFKA_TOPIC", config, "topic", "greenhouse.sensor-events.v1"),
         security_protocol=args.kafka_security_protocol
         or _setting("KAFKA_SECURITY_PROTOCOL", config, "security_protocol", "PLAINTEXT"),
@@ -76,8 +77,7 @@ def run(argv: list[str] | None = None) -> None:
     from pyspark.sql import SparkSession
 
     settings = load_settings(argv)
-    if not settings.bootstrap_servers:
-        raise ValueError("Set KAFKA_BOOTSTRAP_SERVERS before running bronze ingest.")
+    _validate_settings(settings)
 
     spark = SparkSession.builder.appName("sensor-bronze-stream-ingest").getOrCreate()
     spark.sql(f"CREATE SCHEMA IF NOT EXISTS {_database_name(settings.table_name)}")
@@ -135,6 +135,14 @@ def _parse_args(argv: list[str] | None) -> Namespace:
     return parser.parse_args(argv)
 
 
+def _validate_settings(settings: BronzeIngestSettings) -> None:
+    if not settings.bootstrap_servers or "<" in settings.bootstrap_servers:
+        raise ValueError(
+            "Set --kafka-bootstrap-servers to a real MSK bootstrap URL, "
+            "for example boot-ikhrabgh.c3.kafka-serverless.ap-south-1.amazonaws.com:9098."
+        )
+
+
 def _setting(env_name: str, config: dict[str, str], key: str, default: str = "") -> str:
     return os.getenv(env_name, config.get(key, default)).strip()
 
@@ -172,6 +180,8 @@ def _demo() -> None:
     args = load_settings(["--kafka-bootstrap-servers", "broker:9098", "--bronze-table", "bronze.sensor_events"])
     assert args.bootstrap_servers == "broker:9098"
     assert args.table_name == "bronze.sensor_events"
+    defaults = load_settings([])
+    assert defaults.bootstrap_servers == DEFAULT_BOOTSTRAP_SERVERS
 
 
 if __name__ == "__main__":
