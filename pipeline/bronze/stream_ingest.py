@@ -144,7 +144,7 @@ def _validate_settings(settings: BronzeIngestSettings) -> None:
 
 
 def _setting(env_name: str, config: dict[str, str], key: str, default: str = "") -> str:
-    return os.getenv(env_name, config.get(key, default)).strip()
+    return (os.getenv(env_name) or config.get(key) or default).strip()
 
 
 def _load_simple_yaml(path: Path) -> dict[str, str]:
@@ -182,6 +182,9 @@ def _demo() -> None:
     assert args.table_name == "bronze.sensor_events"
     defaults = load_settings([])
     assert defaults.bootstrap_servers == DEFAULT_BOOTSTRAP_SERVERS
+    os.environ["KAFKA_BOOTSTRAP_SERVERS"] = ""
+    assert load_settings([]).bootstrap_servers == DEFAULT_BOOTSTRAP_SERVERS
+    del os.environ["KAFKA_BOOTSTRAP_SERVERS"]
 
 
 if __name__ == "__main__":
