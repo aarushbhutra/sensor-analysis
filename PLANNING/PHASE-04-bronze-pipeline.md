@@ -67,4 +67,4 @@ Phase 5 must not read directly from Kafka if `bronze.sensor_events` already exis
 - Delta path: `s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_events/`
 - Checkpoint path: `s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/`
 - Local structural verification: `$env:BRONZE_INGEST_SELF_CHECK='1'; python pipeline/bronze/stream_ingest.py`
-- Live Databricks verification pending: run the job while the simulator publishes to `greenhouse.sensor-events.v1`, query `bronze.sensor_events`, then restart the job and confirm checkpoint resume behavior.
+- Live Databricks verification pending: publish to `greenhouse.sensor-events.v1`, run the `AvailableNow` job, query `bronze.sensor_events`, then publish more data and rerun the job to confirm checkpoint resume behavior.

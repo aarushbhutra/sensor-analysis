@@ -39,7 +39,6 @@ Optional overrides:
 BRONZE_OUTPUT_PATH=s3://sensor-data-lake-dev-859037107576/delta/bronze/sensor_events/
 BRONZE_CHECKPOINT_PATH=s3://sensor-data-lake-dev-859037107576/checkpoints/bronze_ingest/
 KAFKA_STARTING_OFFSETS=latest
-BRONZE_TRIGGER_INTERVAL=30 seconds
 ```
 
 ## Databricks Libraries
@@ -70,3 +69,5 @@ LIMIT 10;
 ```
 
 Stop and restart the job. The checkpoint at `checkpoints/bronze_ingest/` should let the stream resume without starting from the beginning.
+
+Serverless jobs use `AvailableNow`, so each run drains currently available Kafka records and exits. Run the job again after publishing more simulator data.

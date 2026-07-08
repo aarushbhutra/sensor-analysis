@@ -24,7 +24,6 @@ class BronzeIngestSettings:
     checkpoint_path: str
     table_name: str
     starting_offsets: str
-    trigger_interval: str
 
 
 def load_settings(argv: list[str] | None = None) -> BronzeIngestSettings:
@@ -44,7 +43,6 @@ def load_settings(argv: list[str] | None = None) -> BronzeIngestSettings:
         or os.getenv("BRONZE_CHECKPOINT_PATH", f"s3://{bucket}/checkpoints/bronze_ingest/"),
         table_name=args.bronze_table or os.getenv("BRONZE_TABLE", "bronze.sensor_events"),
         starting_offsets=args.kafka_starting_offsets or os.getenv("KAFKA_STARTING_OFFSETS", "latest"),
-        trigger_interval=args.bronze_trigger_interval or os.getenv("BRONZE_TRIGGER_INTERVAL", "30 seconds"),
     )
 
 
@@ -90,7 +88,7 @@ def run(argv: list[str] | None = None) -> None:
         .outputMode("append")
         .option("checkpointLocation", settings.checkpoint_path)
         .option("path", settings.output_path)
-        .trigger(processingTime=settings.trigger_interval)
+        .trigger(availableNow=True)
         .toTable(settings.table_name)
     )
     query.awaitTermination()
@@ -134,7 +132,6 @@ def _parse_args(argv: list[str] | None) -> Namespace:
     parser.add_argument("--bronze-checkpoint-path")
     parser.add_argument("--bronze-table")
     parser.add_argument("--kafka-starting-offsets")
-    parser.add_argument("--bronze-trigger-interval")
     return parser.parse_args(argv)
 
 
@@ -166,7 +163,6 @@ def _demo() -> None:
         checkpoint_path="s3://bucket/checkpoints/bronze_ingest/",
         table_name="bronze.sensor_events",
         starting_offsets="latest",
-        trigger_interval="30 seconds",
     )
     options = _auth_options(settings)
     assert options["kafka.security.protocol"] == "SASL_SSL"

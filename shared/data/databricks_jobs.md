@@ -10,6 +10,8 @@ Script: `pipeline/bronze/stream_ingest.py`
 
 Purpose: read raw greenhouse telemetry from Kafka and append it to `bronze.sensor_events`.
 
+Trigger: `AvailableNow`, because Databricks serverless jobs do not support infinite `ProcessingTime` streams.
+
 Task parameters:
 
 ```json
