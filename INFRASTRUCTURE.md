@@ -41,7 +41,7 @@ flowchart LR
     end
 
     subgraph AWS["AWS"]
-        MSK["Amazon MSK\nsensor.telemetry.raw"]
+        MSK["Amazon MSK\ngreenhouse.sensor-events.v1"]
         S3["Amazon S3\nDelta Lake storage"]
         ECS["ECS Fargate\nbackend API"]
         CF["CloudFront"]
@@ -152,7 +152,7 @@ flowchart LR
 - Broker count: `3`
 - Kafka version: current MSK-supported stable line at provisioning time
 - Topic:
-  - `sensor.telemetry.raw`
+  - `greenhouse.sensor-events.v1`
 - Partitions:
   - start with `12`
 - Replication factor:
@@ -237,7 +237,7 @@ S3 rules:
 ## Data Flow
 ```mermaid
 flowchart TD
-    RAW["Kafka topic\nsensor.telemetry.raw"] --> BRONZE["Bronze Delta\nraw events + ingest metadata"]
+    RAW["Kafka topic\ngreenhouse.sensor-events.v1"] --> BRONZE["Bronze Delta\nraw events + ingest metadata"]
     BRONZE --> SILVER["Silver Delta\ntyped, deduped, normalized readings"]
     SILVER --> GOLD1["Gold Delta\nzone_hourly_metrics"]
     SILVER --> GOLD2["Gold Delta\ngreenhouse_daily_summary"]
@@ -254,7 +254,7 @@ flowchart TD
 ## Data Contracts
 
 ### Kafka Event Schema
-Topic: `sensor.telemetry.raw`
+Topic: `greenhouse.sensor-events.v1`
 
 Required fields:
 - `event_id`
@@ -311,7 +311,7 @@ Columns:
 
 ### Job 1: `stream_ingest_job`
 - Type: Spark Structured Streaming
-- Reads from MSK topic `sensor.telemetry.raw`
+- Reads from MSK topic `greenhouse.sensor-events.v1`
 - Writes to `bronze.sensor_events`
 - Stores checkpoint in `s3://.../checkpoints/bronze_ingest/`
 - Trigger: continuous or short micro-batch

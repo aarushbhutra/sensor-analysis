@@ -1,6 +1,6 @@
 # Env vars override these defaults.
-bootstrap_servers:
-topic: sensor.telemetry.raw
+bootstrap_servers: boot-ikhrabgh.c3.kafka-serverless.ap-south-1.amazonaws.com:9098
+topic: greenhouse.sensor-events.v1
 security_protocol: PLAINTEXT
 sasl_mechanism:
 aws_region: ap-south-1
